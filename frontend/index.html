@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap"/>
+    <link rel="stylesheet" href="style.css">
+
+    <title>IWP — Forum & News</title>
+</head>
+
+<body>
+    <nav>
+      <div class="nav-logo">IWP</div>
+
+      <div class="nav-tabs">
+        <div class="nav-tab active" onclick="showPage('forum')">Forum</div>
+        <div class="nav-tab" onclick="showPage('popular')">Popular</div>
+        <div class="nav-tab" onclick="showPage('news')">News</div>
+      </div>
+
+      <div class="nav-right" id="navRight">
+        <button class="btn btn-outline" onclick="showPage('login')">Log In</button>
+        <button class="btn btn-primary" onclick="showPage('register')">Sign Up</button>
+      </div>
+    </nav>
+
+    <div id="toast"></div>
+
+
+    <!--    FORUM PAGE    -->
+    <div id="page-forum" class="page active">
+      <div class="app">
+        <div class="two-col">
+          <div>
+            <div class="forum-header">
+              <h1>The <span>Forum</span></h1>
+              <button class="btn btn-primary" onclick="openNewPost()" id="newPostBtn" style="display:none">+ New Post</button>
+            </div>
+
+            <div class="cat-filters" id="catFilters">
+              <div class="cat-chip active" onclick="filterCat('all',this)">All</div>
+              <div class="cat-chip" onclick="filterCat('technology',this)">Technology</div>
+              <div class="cat-chip" onclick="filterCat('science',this)">Science</div>
+              <div class="cat-chip" onclick="filterCat('gaming',this)">Gaming</div>
+              <div class="cat-chip" onclick="filterCat('general',this)">General</div>
+              <div class="cat-chip" onclick="filterCat('ask',this)">Ask</div>
+            </div>
+
+            <div id="postsList"><div class="loading-center"><div class="spinner"></div></div></div>
+            <div id="pagination" class="pagination"></div>
+          </div>
+
+          <div>
+            <div class="sidebar-card" id="userCard" style="display:none"></div>
+
+            <div class="sidebar-card">
+              <h3>Forum Rules</h3>
+
+              <div class="rule-item"><span class="rule-num">1</span><span>Be respectful to others</span></div>
+              <div class="rule-item"><span class="rule-num">2</span><span>No spam or self-promotion</span></div>
+              <div class="rule-item"><span class="rule-num">3</span><span>Stay on topic</span></div>
+              <div class="rule-item"><span class="rule-num">4</span><span>Cite your sources</span></div>
+              <div class="rule-item"><span class="rule-num">5</span><span>Have fun and learn!</span></div>
+            </div>
+
+            <div class="sidebar-card">
+              <h3>Categories</h3>
+              <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px" id="catStats"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--    POST DETAIL PAGE    -->
+    <div id="page-detail" class="page">
+      <div class="app" style="max-width:800px">
+        <div class="back-btn" onclick="showPage('forum')">← Back to Forum</div>
+        <div id="postDetailContent"></div>
+      </div>
+    </div>
+
+
+    <!--    POPULAR PAGE    -->
+    <div id="page-popular" class="page">
+      <div class="app">
+        <div class="two-col">
+          <div>
+            <div class="forum-header">
+              <h1><span>Popular</span></h1>
+
+              <select class="form-select" id="popularRange" onchange="loadPopular()" style="width:auto;padding:7px 14px">
+                <option value="today" selected>Today</option>
+                <option value="week">This Week</option>
+                <option value="month">This Month</option>
+                <option value="all">All Time</option>
+              </select>
+            </div>
+
+            <div id="popularList"><div class="loading-center"><div class="spinner"></div></div></div>
+          </div>
+
+          <div class="sidebar-card">
+            <h3>📈 Trending Topics</h3>
+            <div id="trendingTopics" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!--    NEWS PAGE    -->
+    <div id="page-news" class="page">
+      <div class="app">
+        <div class="news-header">
+          <h1>News <span>Feed</span></h1>
+          <p style="color:var(--text-muted);font-size:14px;margin-top:6px">Aggregated from top sources worldwide</p>
+<!--          <div style="margin-top:12px" id="newsBadge"></div>-->
+        </div>
+
+        <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px;align-items:flex-end">
+          <div style="flex:1;min-width:200px">
+            <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--text-muted);display:block;margin-bottom:5px">Search</label>
+
+            <div style="display:flex;gap:8px">
+              <input class="form-input" type="text" id="newsQuery" placeholder="Keywords…"/>
+              <button class="btn btn-primary" onclick="searchNews()">Search</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="cat-filters" id="newsCatFilters">
+          <div class="cat-chip active" onclick="filterNewsCat('',this)">All</div>
+          <div class="cat-chip" onclick="filterNewsCat('technology',this)">Technology</div>
+          <div class="cat-chip" onclick="filterNewsCat('business',this)">Business</div>
+          <div class="cat-chip" onclick="filterNewsCat('science',this)">Science</div>
+          <div class="cat-chip" onclick="filterNewsCat('health',this)">Health</div>
+          <div class="cat-chip" onclick="filterNewsCat('general',this)">General</div>
+          <div class="cat-chip" onclick="filterNewsCat('entertainment',this)">Entertainment</div>
+          <div class="cat-chip" onclick="filterNewsCat('sports',this)">Sports</div>
+        </div>
+
+        <div id="newsGrid" class="news-grid"></div>
+        <div id="newsPagination" class="pagination" style="margin-top:24px"></div>
+      </div>
+    </div>
+
+
+    <!--    LOGIN PAGE    -->
+    <div id="page-login" class="page">
+      <div class="app auth-panel">
+        <div class="modal">
+          <h2>Welcome back</h2>
+          <div class="error-msg" id="loginError"></div>
+
+          <div class="form-group"><label>Email</label>
+              <input class="form-input" id="loginEmail" type="email" placeholder="you@example.com"/>
+          </div>
+
+          <div class="form-group"><label>Password</label>
+              <input class="form-input" id="loginPassword" type="password" placeholder="••••••••"/>
+          </div>
+
+          <button class="btn btn-primary" style="width:100%;padding:10px" onclick="doLogin()">Log In</button>
+          <div class="auth-toggle">Don't have an account? <span onclick="showPage('register')">Sign Up</span></div>
+        </div>
+      </div>
+    </div>
+
+
+    <!--    REGISTER PAGE    -->
+    <div id="page-register" class="page">
+      <div class="app auth-panel">
+        <div class="modal">
+          <h2>Create account</h2>
+          <div class="error-msg" id="registerError"></div>
+
+          <div class="form-group"><label>Username</label>
+              <input class="form-input" id="regUsername" placeholder="cooluser123"/>
+          </div>
+
+          <div class="form-group"><label>Email</label>
+              <input class="form-input" id="regEmail" type="email" placeholder="you@example.com"/>
+          </div>
+
+          <div class="form-group"><label>Password</label>
+              <input class="form-input" id="regPassword" type="password" placeholder="min. 6 characters"/>
+          </div>
+
+          <button class="btn btn-primary" style="width:100%;padding:10px" onclick="doRegister()">Create Account</button>
+          <div class="auth-toggle">Already have an account? <span onclick="showPage('login')">Log In</span></div>
+        </div>
+      </div>
+    </div>
+
+
+    <!--    NEW POST MODAL    -->
+    <div class="modal-backdrop" id="newPostModal">
+      <div class="modal">
+        <h2>New Post</h2>
+
+        <div class="error-msg" id="postError"></div>
+        <div class="form-group"><label>Title</label>
+            <input class="form-input" id="postTitle" placeholder="What's on your mind?"/>
+        </div>
+
+        <div class="form-group"><label>Category</label>
+          <select class="form-select" id="postCategory">
+            <option value="general">General</option>
+            <option value="technology">Technology</option>
+            <option value="science">Science</option>
+            <option value="gaming">Gaming</option>
+            <option value="ask">Ask</option>
+          </select>
+        </div>
+
+        <div class="form-group"><label>Body</label>
+            <textarea class="form-textarea" id="postBody" placeholder="Share your thoughts…"></textarea>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn btn-ghost" onclick="closeNewPost()">Cancel</button>
+          <button class="btn btn-primary" onclick="submitPost()">Publish Post</button>
+        </div>
+      </div>
+    </div>
+
+
+    <!--    DELETE MODAL    -->
+    <div class="modal-backdrop" id="confirmModal">
+      <div class="modal">
+        <h2 id="confirmTitle">Confirm Delete</h2>
+
+        <p id="confirmText" style="margin-top:10px;color:var(--text-muted)">
+          Are you sure?
+        </p>
+
+        <div class="modal-footer">
+          <button class="btn btn-ghost" onclick="closeConfirmModal()">
+            Cancel
+          </button>
+
+          <button class="btn btn-danger" id="confirmBtn">
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
