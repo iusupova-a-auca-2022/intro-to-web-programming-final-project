@@ -80,31 +80,31 @@ then discuss what they have read directly in the forum, all without leaving the 
 
 ### 1. Create the database
 #### In pgAdmin or psql:
- CREATE DATABASE forumnews;
+    CREATE DATABASE forumnews;
 
 ### 2. Configure the backend
 #### Open backend/config.py and set your PostgreSQL password and news API key:
- SQLALCHEMY_DATABASE_URI = "postgresql://postgres:YOUR_PASSWORD@localhost:5432/forumnews"
- NEWS_API_KEY = "your_key"
+    SQLALCHEMY_DATABASE_URI = "postgresql://postgres:YOUR_PASSWORD@localhost:5432/forumnews"
+    NEWS_API_KEY = "your_key"
 
 ### 3. Install dependencies
- cd backend
+    cd backend
  
 #### Create and activate virtual environment:
- python -m venv venv
- venv\Scripts\activate # Windows
- source venv/bin/activate # macOS / Linux
+    python -m venv venv
+    venv\Scripts\activate # Windows
+    source venv/bin/activate # macOS / Linux
  
 #### Install packages:
- pip install -r requirements.txt
+    pip install -r requirements.txt
 
 ### 4. Start the backend
- python app.py
+    python app.py
 
 ### 5. Start the frontend
 #### Open a second terminal:
- cd frontend
- python -m http.server 8080
+    cd frontend
+    python -m http.server 8080
 #### Open your browser at http://localhost:8080
 
 
